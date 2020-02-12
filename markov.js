@@ -19,6 +19,7 @@ class MarkovMachine {
   
   makeChains() {
     for(let word of this.words) {
+      
       this.wordChains[word] = [];
       let start = this.words.indexOf(word);
 
@@ -31,24 +32,26 @@ class MarkovMachine {
     }
   }
 
-
   /** return random text from chains */
 
   makeText(numWords = 100) {
     let currentIndex = Math.floor(Math.random() * this.words.length);
     let currentWord = this.words[currentIndex];
-    let markovText = [currentWord];
+    let markovText = [];
+    let nextWord;
+
     let n = 0;
 
     while(n < numWords - 1 && currentWord !== null) {
       currentIndex = Math.floor(Math.random() * this.wordChains[currentWord].length);
-      let nextWord = this.wordChains[currentWord][currentIndex]
-      markovText.push(nextWord);
+      nextWord = this.wordChains[currentWord][currentIndex]
+      markovText.push(currentWord);
       currentWord = nextWord;
-
       n++;
     }
 
     return markovText.join(' ');
   }
 }
+
+module.exports = {MarkovMachine}
