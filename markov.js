@@ -18,19 +18,11 @@ class MarkovMachine {
    *  {"the": ["cat", "hat"], "cat": ["in"], "in": ["the"], "hat": [null]} */
   
   makeChains() {
-    for(let word of this.words) {
-      
-      this.wordChains[word] = [];
-      let start = this.words.indexOf(word);
-
-      while(start !== -1 && start < this.words.length - 1) {
-        this.wordChains[word].push(this.words[start + 1]);
-        start = this.words.indexOf(word, start + 1);
-      }
-
-      if(this.wordChains[word].length === 0) this.wordChains[word].push(null)
-    }
-  }
+    for(let i = 0; i < this.words.length; i++) {
+      if(!this.wordChains[this.words[i]]) this.wordChains[this.words[i]] = [];
+      this.wordChains[this.words[i]].push(this.words[i + 1] || null);
+    };
+  };
 
   /** return random text from chains */
 
@@ -40,18 +32,14 @@ class MarkovMachine {
     let markovText = [];
     let nextWord;
 
-    let n = 0;
-
-    while(n < numWords - 1 && currentWord !== null) {
+    while(markovText.length < numWords - 1 && currentWord !== null) {
       currentIndex = Math.floor(Math.random() * this.wordChains[currentWord].length);
-      nextWord = this.wordChains[currentWord][currentIndex]
+      nextWord = this.wordChains[currentWord][currentIndex];
       markovText.push(currentWord);
       currentWord = nextWord;
-      n++;
-    }
-
+    };
     return markovText.join(' ');
-  }
-}
+  };
+};
 
-module.exports = {MarkovMachine}
+module.exports = {MarkovMachine};
